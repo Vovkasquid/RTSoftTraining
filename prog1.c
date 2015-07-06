@@ -7,18 +7,18 @@ int main() {
 	
 	printf("I`m a parrent %d\n", getpid());
 	pipe(fd);
-	//close(fd[1]);
-	write(fd[0],"data", 10);
+	write(fd[1],"data\n", 10);
 	switch(pid = fork()){
 		case -1:
 			printf("Error");
 			return -1;
 		case 0:
 			printf("I`m child and my pid = %d\n", getpid());
-			//close(fd[0]);
-			char sym;
-			read(fd[1], sym, 1);
-			printf("sym = %c", sym);
+			close(fd[1]);
+			char sym[10];
+			read(fd[0], sym, 10);
+			printf("sym = %s \n", sym);
 			return 0;
 	}
+	close(fd[0]);
 }
