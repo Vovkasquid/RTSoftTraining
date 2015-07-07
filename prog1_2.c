@@ -3,7 +3,7 @@
 #include <sys/types.h>
 #include <stdlib.h>
 
-#define size 1024
+#define size 256
 int main() {
 	int pid;
 	int fd[2];
@@ -26,8 +26,9 @@ int main() {
 	}
 	close(fd[1]);
 	char sym[size];
-	//int nread;
-	//while ((nread = read(fd[0], sym, size)) > 0)
-	read(fd[0], sym, size);
-	printf("%s\n", sym);
+	int nread;
+	while ((nread = read(fd[0], sym, size)) > 0) {
+		sym[nread] = '\0';
+		printf("%s", sym);
+	}
 }
