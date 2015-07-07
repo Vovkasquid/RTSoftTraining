@@ -17,7 +17,7 @@ int main() {
 	scanf("%s", buf);
 	//nread = read(0, buf, buf_size);
 	write(fd[1], buf, buf_size);
-	switch(pid = fork()) {
+	switch (pid = fork()) {
 		case -1:
 			printf("Error");
 			return -1;
