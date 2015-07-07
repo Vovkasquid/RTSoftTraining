@@ -22,7 +22,7 @@ void *plus_thread() {
 	for (i = 0; i < 10; i++) {
 		change++;
 		printf("change plus = %d\n", change);
-		sleep(1);
+		sleep(5);
 	}
 }
 	
