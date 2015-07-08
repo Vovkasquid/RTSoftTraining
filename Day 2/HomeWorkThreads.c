@@ -1,3 +1,5 @@
+//Correct password - ABCD
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,7 +15,7 @@ void *WritingThread() {
 
 void *VerifyPassword(void* pass) {
 	char *passw;
-	sleep(15);
+	sleep(10);
 	passw = (char*) pass;
 	printf("test char = %s\n",passw);
 	if(!strcmp(passw, password))
