@@ -24,11 +24,11 @@ void *VerifyPassword(void* pass) {
 			printf("The password is confirmed\n");
 			break;
 		} else {
-		printf("Incorrect password, try again\n");
-		printf("In thread 2 creating thread 1\n");
-		rc = pthread_create(&threads[0], NULL, WritingThread, NULL);
-		if (rc)
-			printf("Error 0 thread in 1st thread; return code is %d\n", rc);
+			printf("Incorrect password, try again\n");
+			printf("In thread 2 creating thread 1\n");
+			rc = pthread_create(&threads[0], NULL, WritingThread, NULL);
+			if (rc)
+				printf("Error 0 thread in 1st thread; return code is %d\n", rc);
 		}
 	}
 }
