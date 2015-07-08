@@ -3,8 +3,10 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include <string.h>
 
 #define size 256
+#define big_buf_size 4096
 int main() {
 	int pid;
 	int status;
@@ -29,7 +31,9 @@ int main() {
 	}	
 	close(fd[1]);
 	char sym[size];
+	char buf[big_buf_size];
 	int nread;
+	
 	pidt = wait(&status);
 	if (pid == -1)
 		perror ("waitpid");
@@ -37,5 +41,7 @@ int main() {
 		if (nread < size - 1)
 			sym[nread] = '\0';
 		printf("%s", sym);
+		strncat (buf, sym, nread);
 	}
+	printf("string after strncat =\n%s\n", buf);
 }
