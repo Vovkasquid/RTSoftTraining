@@ -24,7 +24,7 @@ int main() {
 			close(fd[0]);
 			int ret;
 			dup2(fd[1], 1);
-			ret = execl("/bin/ls", "ls", "/tmp/", "-l", NULL);
+			ret = execl("/bin/ls", "ls", "/usr/", "-l", NULL);
 			if (ret == -1)
 				perror("execvp");
 			exit(EXIT_SUCCESS);
@@ -37,8 +37,8 @@ int main() {
 	pidt = wait(&status);
 	if (pid == -1)
 		perror ("waitpid");
-	while ((nread = read(fd[0], sym, size - 1)) > 0) {
-		if (nread < size - 1)
+	while ((nread = read(fd[0], sym, size)) > 0) {
+		if (nread < size)
 			sym[nread] = '\0';
 		printf("%s", sym);
 		strncat (buf, sym, nread);
