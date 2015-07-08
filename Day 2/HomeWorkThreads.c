@@ -13,8 +13,13 @@ void *WritingThread() {
 
 void *VerifyPassword(void* pass) {
 	char *passw;
+	sleep(15);
 	passw = (char*) pass;
 	printf("test char = %s\n",passw);
+	if(!strcmp(passw, password))
+		printf("The password is confirmed\n");
+	else 
+		printf("Incorrect password\n");
 }
 		
 
