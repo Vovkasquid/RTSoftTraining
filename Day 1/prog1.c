@@ -16,7 +16,7 @@ int main() {
 	printf("Input something \n");
 	scanf("%s", buf);
 	//nread = read(0, buf, buf_size);
-	write(fd[1], buf, buf_size);
+	write(fd[1], buf, buf_size - 1);
 	switch (pid = fork()) {
 		case -1:
 			printf("Error");
@@ -30,4 +30,5 @@ int main() {
 			return 0;
 	}
 	close(fd[0]);
+	return 0;
 }
