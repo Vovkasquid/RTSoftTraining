@@ -6,6 +6,7 @@
 
 #define NUM_THREADS 2
 
+pthread_t threads[NUM_THREADS];
 char password[256];
 
 void *WritingThread() {
@@ -13,11 +14,10 @@ void *WritingThread() {
 	scanf("%s", password);
 }
 
-void *VerifyPassword(void* pass) {
+void *VerifyPassword(void* pass) {	
 	char *passw;
-	sleep(10);
 	passw = (char*) pass;
-	printf("test char = %s\n",passw);
+	pthread_join(threads[0], NULL);
 	if(!strcmp(passw, password))
 		printf("The password is confirmed\n");
 	else 
@@ -26,9 +26,7 @@ void *VerifyPassword(void* pass) {
 		
 
 int main (int argc, char *argv[]) {
-	pthread_t threads[NUM_THREADS];
 	int rc;
-	long t;
 	char pass[256] = "ABCD";
 	printf("In main: creating thread 1\n");
 	rc = pthread_create(&threads[0], NULL, WritingThread, NULL);
@@ -41,12 +39,7 @@ int main (int argc, char *argv[]) {
 	if (rc) {
 		printf("Error; return code is %d\n", rc);
 	}
-	
-	
-	for (t = 0; t < NUM_THREADS; ++t) {
-		pthread_join(threads[t], NULL);
-		printf("Thread #%ld finished \n", t);
-	}
-
+	pthread_join(threads[1], NULL);
+	printf("Thread 1 finished\n");
 	return 0;
 }
