@@ -1,9 +1,3 @@
-TARGET=main
-FLAGS= -lpthread
-all: $(TARGET)
-
-main: main.c
-	gcc main.c -o $(TARGET) $(FLAGS)
-
-clean:
-	rm -f *.o $(TARGET)
+all:
+	gcc main.c -o main -lpthread
+	gcc HWMutCond.c -o HMD3 -lpthread
