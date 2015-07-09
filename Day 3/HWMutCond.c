@@ -30,7 +30,7 @@ void *ThreadsUseIt(void* num) {
 		printf("Thread %ld wait\n", t);
 		pthread_cond_wait(&blocked, &fict);
 	}
-	printf("Thread %ld do all works\n", t);
+	printf("Thread %ld perfomed all works\n", t);
 	pthread_mutex_unlock(&fict);
 	pthread_exit(NULL);
 }
