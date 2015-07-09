@@ -43,5 +43,5 @@ int main() {
 		printf("%s", sym);
 		strncat (buf, sym, nread);
 	}
-	printf("string after strncat =\n%s\n", buf);
+	//printf("string after strncat =\n%s\n", buf);
 }
