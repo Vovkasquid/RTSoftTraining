@@ -1,5 +1,0 @@
-root@am335x-evm:~# ifconfig eth0 192.168.99.2 up  
-root@am335x-evm:~# ping 192.168.99.1
-user@rt-centre1:~$ ssh root@192.168.99.2 ls /tmp
-user@rt-centre1:~$ scp /bin/bash root@192.168.99.2:/tmp - copy
-
