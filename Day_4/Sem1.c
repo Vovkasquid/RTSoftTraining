@@ -12,23 +12,34 @@ int main() {
 	const int shared_segment_size = 1048576;
 	char* shared_memory;
 	key_t key = ftok("prog1.c", 1);
-	
+	key_t keySem = ftok("prog1.1.c", 1);
+	int semid = binary_semaphore_allocation(keySem, 0666|IPC_CREAT);
+	if (semid <= 0) {
+		printf("Unable to gem sem id\n");
+		exit(1);
+	}	
 	shmid = shmget(key, shared_segment_size, 0666| IPC_CREAT);
 	if (shmid < 0)
 		printf("Shared memory get fail\n");
 	shared_memory = shmat(shmid, 0, 0);	
 	
 	//fdin = open("bin_sem.h", O_RDONLY);
-	fdout = open("file1", O_RDWR|O_CREAT,
+	fdout = open("file.out", O_RDWR|O_CREAT,
 			S_IRUSR|S_IWUSR);
-	sleep(1);
-	do { 
+	//sleep(1);
+	do {
+		binary_semaphore_take(semid);
+		printf("sem1 shm = %s\n", shared_memory);
 		nwrite = write(fdout, shared_memory, ((int)strlen(shared_memory)));
+		printf("wrote: %d\n", nwrite);
+		binary_semaphore_free(semid);
+		//sleep(1);
 	
 	} while (nwrite == BUF_SIZE);
-	if (shmdt(shared_memory) == -1)
-		printf("shmdt fail");
+	/*if (shmdt(shared_memory) == -1)
+		printf("shmdt fail\ns");
 	if (shmctl(shmid, IPC_RMID, 0) == -1)
-		printf("shmctl fail");
+		printf("shmctl fail\n");*/
+	//binary_semaphore_free(semid);
 	return 0;
 }
