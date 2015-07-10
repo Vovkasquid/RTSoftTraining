@@ -13,7 +13,12 @@ int main() {
 	char* shared_memory;
 	key_t key = ftok("prog1.c", 1);
 	key_t keySem = ftok("prog1.1.c", 1);
+	key_t keySem1 = ftok("file", 1);
+	key_t keySem2 = ftok("file1", 1);
 	int semid = binary_semaphore_allocation(keySem, 0666|IPC_CREAT);
+	int semid1 = binary_semaphore_allocation(keySem1, 0666|IPC_CREAT);
+	int semid2 = binary_semaphore_allocation(keySem2, 0666|IPC_CREAT);
+
 	if (semid <= 0) {
 		printf("Unable to gem sem id\n");
 		exit(1);
@@ -28,11 +33,13 @@ int main() {
 			S_IRUSR|S_IWUSR);
 	//sleep(1);
 	do {
+		binary_semaphore_take(semid2);
 		binary_semaphore_take(semid);
 		printf("sem1 shm = %s\n", shared_memory);
 		nwrite = write(fdout, shared_memory, ((int)strlen(shared_memory)));
 		printf("wrote: %d\n", nwrite);
 		binary_semaphore_free(semid);
+		binary_semaphore_free(semid1);
 		//sleep(1);
 	
 	} while (nwrite == BUF_SIZE);

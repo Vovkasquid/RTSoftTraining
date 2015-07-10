@@ -7,7 +7,7 @@ int main() {
 	int nread;
 	int nwrite;
 	int fdin,fdout;
-	int shmid, shmid1, shmid2;
+	int shmid;
 	const int shared_segment_size = 1048576;
 	char* shared_memory;
 	key_t key = ftok("prog1.c", 1);
@@ -33,6 +33,7 @@ int main() {
 	fdout = open("file.out", O_RDWR|O_CREAT,
 			S_IRUSR|S_IWUSR);
 	while ((nread = read(fdin, buf, BUF_SIZE)) > 0) {
+		binary_semaphore_take(semid1);
 		binary_semaphore_take(semid);
 		if (nread < BUF_SIZE) {
 			buf[nread] = '\0';
@@ -42,6 +43,7 @@ int main() {
 		printf("read: %d\n", nread);
 		strcpy(shared_memory, buf);
 		binary_semaphore_free(semid);
+		binary_semaphore_free(semid2);
 	}
 	if (shmdt(shared_memory) == -1)
 		printf("shmdt fail\n");
