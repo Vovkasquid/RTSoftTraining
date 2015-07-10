@@ -29,7 +29,7 @@ int main() {
 		printf("Shared memory get fail\n");
 	shared_memory = shmat(shmid, 0, 0);	
 	
-	fdin = open("100mb_file", O_RDONLY);
+	fdin = open("bin_sem.h", O_RDONLY);
 	fdout = open("file.out", O_RDWR|O_CREAT,
 			S_IRUSR|S_IWUSR);
 	while ((nread = read(fdin, buf, BUF_SIZE)) > 0) {
@@ -39,9 +39,10 @@ int main() {
 			buf[nread] = '\0';
 			printf("buf last sem = %s \n", buf);
 		}
-		//write(fdout, buf, BUF_SIZE);
+		write(fdout, buf, BUF_SIZE);
 		printf("read: %d\n", nread);
 		strcpy(shared_memory, buf);
+		printf("shared_memory after strcpy:\n %s\n",shared_memory); 
 		binary_semaphore_free(semid);
 		binary_semaphore_free(semid2);
 	}
@@ -50,5 +51,9 @@ int main() {
 	if (shmctl(shmid, IPC_RMID, 0) == -1)
 		printf("shmctl fail\n");
 	binary_semaphore_deallocate(semid);
+	binary_semaphore_deallocate(semid1);
+	binary_semaphore_deallocate(semid2);
+	close(fdin);
+	close(fdout);
 	return 0;
 }

@@ -31,22 +31,23 @@ int main() {
 	//fdin = open("bin_sem.h", O_RDONLY);
 	fdout = open("file.out", O_RDWR|O_CREAT,
 			S_IRUSR|S_IWUSR);
-	//sleep(1);
-	do {
-		binary_semaphore_take(semid2);
-		binary_semaphore_take(semid);
+	sleep(1);
+	//do {
+		//binary_semaphore_take(semid2);
+		//binary_semaphore_take(semid);
 		printf("sem1 shm = %s\n", shared_memory);
-		nwrite = write(fdout, shared_memory, ((int)strlen(shared_memory)));
+		nwrite = write(fdout, shared_memory, strlen(shared_memory));
 		printf("wrote: %d\n", nwrite);
-		binary_semaphore_free(semid);
-		binary_semaphore_free(semid1);
+		//binary_semaphore_free(semid);
+		//binary_semaphore_free(semid1);
 		//sleep(1);
 	
-	} while (nwrite == BUF_SIZE);
+	//} while (nwrite == BUF_SIZE);
 	/*if (shmdt(shared_memory) == -1)
 		printf("shmdt fail\ns");
 	if (shmctl(shmid, IPC_RMID, 0) == -1)
 		printf("shmctl fail\n");*/
 	//binary_semaphore_free(semid);
+	close(fdout);
 	return 0;
 }
