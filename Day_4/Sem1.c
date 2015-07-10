@@ -1,15 +1,15 @@
 #include "bin_sem.h"
 
-#define BUF_SIZE 1048576
+#define BUF_SIZE 1048577
 
 int main() {
 	char buf[BUF_SIZE];
 	int nread;
-	int nwrite;
+	int nwrite = 1;
 	//int fdin;
 	int fdout;
 	int shmid;
-	const int shared_segment_size = 1048576;
+	const int shared_segment_size = 1048578;
 	char* shared_memory;
 	key_t key = ftok("prog1.c", 1);
 	key_t keySem = ftok("prog1.1.c", 1);
@@ -32,16 +32,19 @@ int main() {
 	fdout = open("file.out", O_RDWR|O_CREAT,
 			S_IRUSR|S_IWUSR);
 	sleep(1);
-	//do {
-		//binary_semaphore_take(semid2);
-		//binary_semaphore_take(semid);
-		printf("sem1 shm = %s\n", shared_memory);
-		nwrite = write(fdout, shared_memory, strlen(shared_memory));
-		printf("wrote: %d\n", nwrite);
-		//binary_semaphore_free(semid);
-		//binary_semaphore_free(semid1);
+	do {
+		//printf("nwrite start cycle = %d\n", nwrite);
+		printf("BUF_SIZE+1 = %c\n", shared_memory[BUF_SIZE +1]);
+		binary_semaphore_take(semid2);
+		binary_semaphore_take(semid);
+		//printf("sem1 shm = %s\n", shared_memory);
+		//strncpy(buf, shared_memory, strlen(shared_memory));
+		nwrite = write(fdout, shared_memory, (int)strlen(shared_memory));
+		printf("wrote: %d\nstrlen_mem: %d\n", nwrite, (int)strlen(shared_memory));
+		binary_semaphore_free(semid);
+		binary_semaphore_free(semid1);
 		//sleep(1);
-	
+	} while (shared_memory[BUF_SIZE + 1] != '1');
 	//} while (nwrite == BUF_SIZE);
 	/*if (shmdt(shared_memory) == -1)
 		printf("shmdt fail\ns");
