@@ -12,6 +12,7 @@ int main() {
 	const int shared_segment_size = 1048576;
 	char* shared_memory;
 	key_t key = ftok("prog1.c", 1);
+	
 	shmid = shmget(key, shared_segment_size, 0666| IPC_CREAT);
 	if (shmid < 0)
 		printf("Shared memory get fail\n");
@@ -26,5 +27,9 @@ int main() {
 		//nwrite = write(fdout, buf, nread);
 	strcpy(shared_memory, buf);
 	}
+	if (shmdt(shared_memory) == -1)
+		printf("shmdt fail");
+	if (shmctl(shmid, IPC_RMID, 0) == -1)
+		printf("shmctl fail");
 	return 0;
 }
