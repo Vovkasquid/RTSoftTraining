@@ -5,7 +5,7 @@
 int main(){
 	key_t key = ftok("File1.c", 1);
 	int semid = binary_semaphore_allocation(key, 0666 | 
-IPC_CREAT);
+	IPC_CREAT);
 	if (semid > 0) {
 		printf("pr2: Try take the sem\n");
 		binary_semaphore_take(semid);

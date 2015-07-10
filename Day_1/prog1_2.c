@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #define size 256
 #define big_buf_size 4096
@@ -43,5 +44,5 @@ int main() {
 		printf("%s", sym);
 		strncat (buf, sym, nread);
 	}
-	printf("string after strncat =\n%s\n", buf);
+	//printf("string after strncat =\n%s\n", buf);
 }
