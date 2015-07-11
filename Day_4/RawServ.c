@@ -2,14 +2,24 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <stdio.h>
+#include <stdio.h>
+#include <string.h>
 
+struct headerUDP {
+	short src_port;
+	short targ_port;
+	short length;
+	short checksum;
+};
 int main()
 {
 	int sock;
+	//struct headerUDP header;
 	struct sockaddr_in addr;
 	char buf[1024];
 	int bytes_read;
 	
+	sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sock < 0) {
 		perror("socket");
@@ -26,8 +36,10 @@ int main()
 	}
 	
 	while(1) {
+		//bytes_read = recvfrom(sock, buf, sizeof(buf) + sizeof(header), 0, NULL, NULL);
+		printf("Wait\n");
 		bytes_read = recvfrom(sock, buf, 1024, 0, NULL, NULL);
-		buf[bytes_read] = '\0';
+		//buf[bytes_read] = '\0';
 		printf("%s\n", buf);
 	}
 	return 0;
