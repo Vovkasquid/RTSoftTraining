@@ -12,23 +12,33 @@ int main() {
 	const int shared_segment_size = BUF_SIZE + 1;
 	char* shared_memory;
 	key_t key = ftok("prog1.c", 1);
-	key_t keySem = ftok("prog1.1.c", 1);
+	key_t keySem = ftok("tdf", 1);
 	key_t keySem1 = ftok("file", 1);
-	key_t keySem2 = ftok("file1", 1);
+	key_t keySem2 = ftok("rgv", 1);
+	
 	int semid = binary_semaphore_allocation(keySem, 0666|IPC_CREAT);
+	printf("semid: %d\n ",semid);
 	int semid1 = binary_semaphore_allocation(keySem1, 0666|IPC_CREAT);
+	printf("semid1: %d\n ",semid1);
 	int semid2 = binary_semaphore_allocation(keySem2, 0666|IPC_CREAT);
+	printf("semid2: %d\n ",semid2);
 	
 	binary_semaphore_initialize(semid);
 	binary_semaphore_initialize(semid1);
-	binary_semaphore_initialize(semid2);
-	
-	binary_semaphore_take(semid2);
+	binary_semaphore_initialize_0(semid2);
 	
 	shmid = shmget(key, shared_segment_size, 0666| IPC_CREAT);
 	if (shmid < 0)
 		printf("Shared memory get fail\n");
 	shared_memory = shmat(shmid, 0, 0);
+	shared_memory = "4555";
+	shared_memory[4] = '\0';
+	binary_semaphore_free(semid2);
+	sleep(10);
+	binary_semaphore_deallocate(semid);
+	binary_semaphore_deallocate(semid1);
+	binary_semaphore_deallocate(semid2);
+	return 0;
 	shared_memory[BUF_SIZE+1] = '0';
 	
 	fdin = open("100mb_file", O_RDONLY);
@@ -36,6 +46,7 @@ int main() {
 			//S_IRUSR|S_IWUSR);
 			int i = 0;
 	while ((nread = read(fdin, buf, BUF_SIZE)) > 0) {
+		printf("nread after while: %d\n", nread);
 		binary_semaphore_take(semid1);
 		printf("Take sem1\n");
 		binary_semaphore_take(semid);
@@ -44,12 +55,12 @@ int main() {
 		if (nread < BUF_SIZE) {
 			buf[nread] = '\0';
 			//printf("buf last sem = %s \n", buf);
-			shared_memory[BUF_SIZE+1] = '1';
+			//shared_memory[BUF_SIZE+1] = '1';
 		}
 		//write(fdout, buf, BUF_SIZE);
 		printf("BUF_SIZE+1 = %c\n", shared_memory[BUF_SIZE +1]);
 		printf("read: %d\n", nread);
-		//strcpy(shared_memory, buf);
+		strcpy(shared_memory, buf);
 		//sleep(5);
 		binary_semaphore_free(semid);
 		printf("Free sem\n");

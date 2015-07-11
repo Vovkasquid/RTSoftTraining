@@ -30,3 +30,8 @@ int binary_semaphore_free (int semid)
 	sem_b.sem_op = 1;
 	return semop (semid, &sem_b, 1);
 }
+int binary_semaphore_initialize_0(int semid) {
+	union semun argument;
+	argument.val = 0;
+	return semctl(semid, 0, SETVAL, argument);
+}

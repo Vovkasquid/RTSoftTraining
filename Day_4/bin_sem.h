@@ -21,5 +21,6 @@ union semun { /* Определяем union semun */
 int binary_semaphore_allocation(key_t, int sem_flags);
 int binary_semaphore_deallocate(int semid);
 int binary_semaphore_initialize(int semid);
+int binary_semaphore_initialize_0(int semid);
 int binary_semaphore_take(int semid);
 int binary_semaphore_free(int semid);
